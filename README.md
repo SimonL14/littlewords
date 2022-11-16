@@ -1,1 +1,2 @@
 # littlewords
+- Simon Lamirand

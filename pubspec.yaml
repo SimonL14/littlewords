@@ -45,6 +45,7 @@ dependencies:
   sqflite: ^2.2.0+3
   path: ^1.8.2
   freezed: ^2.2.1
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

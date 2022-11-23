@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 //import 'package:json_annotation/json_annotation.dart';
 //import 'package:sqflite/sqflite.dart';
 //import 'package:path/path.dart';
+//import 'package:freezed/builder.dart';
+//import 'package:build_runner/build_runner.dart';
 
 
 void main() {

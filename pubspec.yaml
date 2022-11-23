@@ -42,6 +42,8 @@ dependencies:
   flutter_riverpod: ^2.1.1
   go_router: ^5.2.0
   json_annotation: ^4.7.0
+  sqflite: ^2.2.0+3
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

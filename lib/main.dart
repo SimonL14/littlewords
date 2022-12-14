@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:littlewords/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'mainpage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => home(),
 
       },
     );

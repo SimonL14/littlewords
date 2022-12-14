@@ -87,17 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
           WordCount(),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save),
-        onPressed: () async {
-          // si on click sur l'icon, on ajoute dans la base de donnée
-            //await DbHelper.instance.insert(WordDTO(1,textController.text , textController.text ,20,20));
-          //Nettoyage de la zone de texte
-          setState(() {
-            textController.clear();
-          });
-        },
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,6 +100,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            FloatingActionButton(
+              child: Icon(Icons.save),
+              onPressed: () async {
+                // si on click sur l'icon, on ajoute dans la base de donnée
+                //await DbHelper.instance.insert(WordDTO(1,textController.text , textController.text ,20,20));
+                //Nettoyage de la zone de texte
+                setState(() {
+                  textController.clear();
+                });
+              },
+            )
           ]
       ),);
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:littlewords/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'addword.dart';
 import 'home.dart';
 
 class HomePage extends StatelessWidget {
@@ -79,6 +81,33 @@ class _MyDashboardState extends State<MyDashboard> {
           ),
         ),
       ),
-    );
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Consumer(
+              builder: (context, ref, child) {
+                return FloatingActionButton(
+                  onPressed: _openAddWord,
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.arrow_upward),
+                );
+              },
+            ),
+          ]
+      ),);
+  }
+
+  void _openAddWord() {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        backgroundColor: Color(0xffCEDAE4),
+        builder: (context){
+          return AddWord();
+        });
+
   }
 }

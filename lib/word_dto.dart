@@ -5,7 +5,7 @@ part 'word_dto.g.dart';
 @JsonSerializable() // Permet de générer des méthodes from et toJson
 class WordDTO{
   //Constructeur
-  WordDTO(this.uid, this.author, this.content, this.lagitude, this.longitude);
+  WordDTO(this.uid, this.author, this.content, this.lagitude, this.longitude, this.worldId);
 
   // Attributs // int? ou String? permet de dire que les attributs peuvent être null
   final int? uid;
@@ -13,6 +13,7 @@ class WordDTO{
   final String? content;
   final double? lagitude;
   final double? longitude;
+  final int? worldId;
 
   Map<String, dynamic> toJson() => _$WordDTOToJson(this);
 

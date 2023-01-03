@@ -4,10 +4,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:littlewords/main.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'addword.dart';
 import 'home.dart';
+import 'device_location.provider.dart';
+import 'package:location/location.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -23,16 +25,18 @@ class HomePage extends StatelessWidget {
 class MyDashboard extends StatefulWidget {
   @override
   _MyDashboardState createState() => _MyDashboardState();
+
 }
 
 class _MyDashboardState extends State<MyDashboard> {
-
+  late final MapController _mapController;
   String? username;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _mapController = MapController();
     initial();
   }
 
@@ -42,6 +46,8 @@ class _MyDashboardState extends State<MyDashboard> {
       username = prefs.getString('username');
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +72,14 @@ class _MyDashboardState extends State<MyDashboard> {
           child: Column(
             children: [
               Flexible(
-                child: FlutterMap(
-                  options:
-                  MapOptions(center: LatLng(50.95129, 1.858686), zoom: 12),
-                  children: [
-                    TileLayer(
-                      urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-                    ),
-                  ],
+                child: Consumer(
+
+                  builder: (BuildContext context, WidgetRef ref, Widget? child) {
+
+                    return ref.watch(deviceLocationProvider).when(data: _onData, error: _onError, loading: _onLoading);
+
+
+                  },
                 ),
               ),
             ],
@@ -83,31 +88,63 @@ class _MyDashboardState extends State<MyDashboard> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Consumer(
-              builder: (context, ref, child) {
-                return FloatingActionButton(
-                  onPressed: _openAddWord,
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.arrow_upward),
-                );
-              },
-            ),
+
           ]
       ),);
   }
-
-  void _openAddWord() {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+  Widget _onData(LatLng data) {
+    return FlutterMap(
+      mapController: _mapController,
+      options:
+      MapOptions(
+        zoom: 13,
+        onMapReady: () async{
+          _mapController.move(data, _mapController.zoom);
+        },
+      ),
+      children: [
+        TileLayer(
+          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          userAgentPackageName: 'dev.fleaflet.flutter_map.example',
         ),
-        backgroundColor: Color(0xffCEDAE4),
-        builder: (context){
-          return AddWord();
-        });
+        const MyPositionMarkerLayer(),
+      ],
+    );
+  }
 
+  Widget _onError(Object error, StackTrace stackTrace) {
+    return Container(color: Colors.red,);
+  }
+
+  Widget _onLoading() {
+    return const Center(child: CircularProgressIndicator(),);
   }
 }
+
+class MyPositionMarkerLayer extends ConsumerWidget {
+  const MyPositionMarkerLayer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(deviceLocationProvider).when(data: _onData, error: _onError, loading: _onLoading);
+  }
+
+  Widget _onData(LatLng data) {
+    return MarkerLayer(
+      markers: [
+        Marker(point: data, builder: (context) => const Icon(Icons.location_on, color: Colors.red, size: 40.0),
+        ),
+      ],
+    );
+  }
+
+  Widget _onError(Object error, StackTrace stackTrace) {
+    return const SizedBox();
+  }
+
+  Widget _onLoading() {
+    return const SizedBox();
+  }
+}
+

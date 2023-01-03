@@ -21,4 +21,5 @@ Map<String, dynamic> _$WordDTOToJson(WordDTO instance) => <String, dynamic>{
       'content': instance.content,
       'lagitude': instance.lagitude,
       'longitude': instance.longitude,
+      'worldId': instance.worldId,
     };

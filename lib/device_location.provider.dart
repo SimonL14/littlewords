@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 final deviceLocationProvider = FutureProvider<LatLng>((ref) async {
   Location location = Location();
 
+  print('deviceLocationProvider 1');
 // On vérifie que le service de location est activé sur le téléphone
   bool serviceEnabled = await location.serviceEnabled();
   if (!serviceEnabled) {
@@ -13,6 +14,8 @@ final deviceLocationProvider = FutureProvider<LatLng>((ref) async {
       return Future.error("service_not_enabled");
     }
   }
+
+  print('deviceLocationProvider 2');
 
 // On vérifie que l'utilisateur a donné son autorisation
   PermissionStatus permissionGranted = await location.hasPermission();
@@ -23,7 +26,10 @@ final deviceLocationProvider = FutureProvider<LatLng>((ref) async {
     }
   }
 
+  print('deviceLocationProvider 3');
   final LocationData locationData = await location.getLocation();
+
+  print('current lat:lng : ${locationData.latitude!} : ${locationData.longitude!}');
 
   return Future.value(LatLng(locationData.latitude!, locationData.longitude!));
 });

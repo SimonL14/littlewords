@@ -37,7 +37,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool newuser = (prefs.getBool('login') ?? true);
 
-    print(newuser);
     if (newuser == false) {
       Navigator.pushReplacement(
           context, new MaterialPageRoute(builder: (context) => MyDashboard()));

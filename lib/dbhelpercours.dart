@@ -8,7 +8,7 @@ class DbHelper{
   // Création de constantes (dbName = nom base de donnée // dbPathName = nom du fichier sur le tel qui stock les données // dbVersion = version de la bdd)
   static const dbName = 'littlewords.db'; // nom schema
   static const dbPathName = 'littlewords.path'; // nom du fichier sur le tel
-  static const dbVersion = 1; // numéro de version du schema (pour les upgrades)
+  static const dbVersion = 7; // numéro de version du schema (pour les upgrades)
 
   //Instance de connexion à la base de donnée
   static Database? _database;
@@ -36,7 +36,7 @@ class DbHelper{
   }
   //Déclenché lorsque la base de données n'existe pas sur le tel
   Future _onCreate(Database db, int version) async{
-    const String createWordsTableQuery = 'CREATE TABLE words(uid integer PRIMARY KEY AUTOINCREMENT,author VARCHAR(200) NOT NULL, content VARCHAR(200) NOT NULL,lagitude double NOT NULL,longitude double NOT NULL, worldId integer NOT NULL)';
+    const String createWordsTableQuery = 'CREATE TABLE words(uid integer PRIMARY KEY AUTOINCREMENT,author VARCHAR(200) NOT NULL, content VARCHAR(200) NOT NULL,latitude double NOT NULL,longitude double NOT NULL, wordsId integer NULL)';
     db.execute(createWordsTableQuery);
   }
 
@@ -55,8 +55,16 @@ class DbHelper{
   Future<void> insert(final WordDTO wordDTO) async{
     //Récupération de l'instance de la db
     Database db = await instance.database;
-    final String insertWord = "INSERT into words (author,content,lagitude,longitude,worldId) values ('${wordDTO.author}','${wordDTO.content}','${wordDTO.lagitude}','${wordDTO.longitude}','${wordDTO.worldId}')";
-    return db.execute(insertWord);
+
+    print('insert ${wordDTO.content}');
+
+    final String insertWord = "INSERT into words (author,content,latitude,longitude,wordsId) values ('${wordDTO.author}','${wordDTO.content}',${wordDTO.latitude},${wordDTO.longitude},${wordDTO.uid})";
+
+    print(insertWord);
+
+    var execute = db.execute(insertWord);
+    print('insert ');
+    return execute;
   }
 
   // Permet de récupérer le nombre de mots dans la base de donnée
@@ -90,6 +98,16 @@ class DbHelper{
     // On retourne la liste de résultats
     return Future.value(results);
 
+  }
+
+  //Permet d'insert dans une base de donnée
+  Future<void> delete(int uid) async{
+    //Récupération de l'instance de la db
+    Database db = await instance.database;
+    final String deleteWord = "DELETE FROM words WHERE id ='$uid'";
+    var execute = db.execute(deleteWord);
+    print('delete');
+    return execute;
   }
 
 }

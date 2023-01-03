@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:littlewords/listword.dart';
 import 'package:littlewords/main.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +27,6 @@ class HomePage extends StatelessWidget {
 class MyDashboard extends StatefulWidget {
   @override
   _MyDashboardState createState() => _MyDashboardState();
-
 }
 
 class _MyDashboardState extends State<MyDashboard> {
@@ -46,8 +47,6 @@ class _MyDashboardState extends State<MyDashboard> {
       username = prefs.getString('username');
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +72,8 @@ class _MyDashboardState extends State<MyDashboard> {
             children: [
               Flexible(
                 child: Consumer(
-
                   builder: (BuildContext context, WidgetRef ref, Widget? child) {
-
                     return ref.watch(deviceLocationProvider).when(data: _onData, error: _onError, loading: _onLoading);
-
-
                   },
                 ),
               ),
@@ -88,11 +83,30 @@ class _MyDashboardState extends State<MyDashboard> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-
+            Consumer(
+              builder: (context, ref, child) {
+                return FloatingActionButton(
+                  onPressed: _openAddWord,
+                  tooltip: 'AddWord',
+                  child: const Icon(Icons.arrow_upward),
+                );
+              },
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                return FloatingActionButton(
+                  onPressed: _openListWord,
+                  tooltip: 'AddWord',
+                  child: const Icon(Icons.arrow_upward),
+                );
+              },
+            ),
           ]
       ),);
   }
+
   Widget _onData(LatLng data) {
     return FlutterMap(
       mapController: _mapController,
@@ -119,6 +133,33 @@ class _MyDashboardState extends State<MyDashboard> {
 
   Widget _onLoading() {
     return const Center(child: CircularProgressIndicator(),);
+  }
+
+  void _openAddWord() {
+    print('call openAddWord');
+    final _txtCtrl = TextEditingController();
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        backgroundColor: Color(0xffCEDAE4),
+        builder: (context){
+          return AddWord(ctrl: _txtCtrl);
+        });
+
+  }
+
+  void _openListWord() {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        backgroundColor: Color(0xffCEDAE4),
+        builder: (context) {
+          return ListWord();
+        });
   }
 }
 
@@ -147,4 +188,3 @@ class MyPositionMarkerLayer extends ConsumerWidget {
     return const SizedBox();
   }
 }
-

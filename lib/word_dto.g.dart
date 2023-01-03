@@ -6,7 +6,9 @@ part of 'word_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WordDTO _$WordDTOFromJson(Map<String, dynamic> json) => WordDTO(
+WordDTO _$WordDTOFromJson(Map<String, dynamic> json) {
+
+  return WordDTO(
       json['uid'] as int?,
       json['author'] as String?,
       json['content'] as String?,
@@ -14,6 +16,7 @@ WordDTO _$WordDTOFromJson(Map<String, dynamic> json) => WordDTO(
       (json['longitude'] as num?)?.toDouble(),
       json['wordsId'] as int?,
     );
+}
 
 Map<String, dynamic> _$WordDTOToJson(WordDTO instance) => <String, dynamic>{
       'uid': instance.uid,

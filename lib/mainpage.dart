@@ -88,7 +88,7 @@ class _MyDashboardState extends State<MyDashboard> {
             Consumer(
               builder: (context, ref, child) {
                 return FloatingActionButton(
-                  onPressed: _openAddWord,
+                  onPressed: () => _openAddWord(context),
                   tooltip: 'AddWord',
                   child: const Icon(Icons.arrow_upward),
                 );
@@ -97,7 +97,7 @@ class _MyDashboardState extends State<MyDashboard> {
             Consumer(
               builder: (context, ref, child) {
                 return FloatingActionButton(
-                  onPressed: _openListWord,
+                  onPressed: () => _openListWord(context),
                   tooltip: 'AddWord',
                   child: const Icon(Icons.arrow_upward),
                 );
@@ -105,6 +105,7 @@ class _MyDashboardState extends State<MyDashboard> {
             ),
           ]
       ),);
+
   }
 
   Widget _onData(LatLng data) {
@@ -135,7 +136,9 @@ class _MyDashboardState extends State<MyDashboard> {
     return const Center(child: CircularProgressIndicator(),);
   }
 
-  void _openAddWord() {
+
+
+  void _openAddWord(final BuildContext context) {
     print('call openAddWord');
     final _txtCtrl = TextEditingController();
     showModalBottomSheet(
@@ -150,7 +153,7 @@ class _MyDashboardState extends State<MyDashboard> {
 
   }
 
-  void _openListWord() {
+  void _openListWord(final BuildContext context) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(

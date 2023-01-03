@@ -3,8 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:littlewords/word_dto.dart';
+
+import 'dbhelpercours.dart';
 
 class AddWord extends ConsumerWidget {
+  final txtInput = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
@@ -52,8 +56,10 @@ class AddWord extends ConsumerWidget {
                   ),
                 ),
 //----------------------------------button send----------------------------------------
-                ElevatedButton(onPressed: (){
+                ElevatedButton(onPressed: () async{
                   Navigator.pop(context);
+                  final WordDTO w = WordDTO(null,"test", txtInput.text, 11111, 11111,100000);
+                  DbHelper.instance.insert(w);
                 },
                     child: Text('Envoyer'),
                     style: ElevatedButton.styleFrom(

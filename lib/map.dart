@@ -11,18 +11,16 @@ class WordsAroundMarkerLayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(wordsAroundProvider).map(data: (data){
-      final List<WordDTO> value = data.value;
+      final List<WordDTO> words = data.value;
       var markers = <Marker>[];
-      //TODO() : Créer un marker pour chaque mot
-      for(WordDTO w in value){
-        markers.add(
-          Marker(point: LatLng(w.lagitude!, w.longitude!), builder: (context){
-
-          })
-        );
+      for(final WordDTO w in words){
+        var wordPosition = LatLng(w.latitude!, w.longitude!);
+        markers.add(Marker(point: wordPosition, builder: (context){
+          return const Icon(Icons.message, size: 32,);
+          }));
       }
 
-      return MarkerLayer(markers: markers, rotate: false,);
+      return MarkerLayer(markers: markers);
     }, error: (error){
       print(error);
       return Container(color: Colors.red.withOpacity(0.5),);

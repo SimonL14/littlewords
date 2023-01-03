@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:littlewords/listword.dart';
 import 'package:littlewords/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -89,7 +91,16 @@ class _MyDashboardState extends State<MyDashboard> {
               builder: (context, ref, child) {
                 return FloatingActionButton(
                   onPressed: _openAddWord,
-                  tooltip: 'Increment',
+                  tooltip: 'AddWord',
+                  child: const Icon(Icons.arrow_upward),
+                );
+              },
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                return FloatingActionButton(
+                  onPressed: _openListWord,
+                  tooltip: 'AddWord',
                   child: const Icon(Icons.arrow_upward),
                 );
               },
@@ -99,6 +110,8 @@ class _MyDashboardState extends State<MyDashboard> {
   }
 
   void _openAddWord() {
+    print('call openAddWord');
+    final _txtCtrl = TextEditingController();
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -106,8 +119,20 @@ class _MyDashboardState extends State<MyDashboard> {
         ),
         backgroundColor: Color(0xffCEDAE4),
         builder: (context){
-          return AddWord();
-        });
+          return AddWord(ctrl: _txtCtrl);
+    });
 
+  }
+
+  void _openListWord() {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        backgroundColor: Color(0xffCEDAE4),
+        builder: (context) {
+          return ListWord();
+        });
   }
 }

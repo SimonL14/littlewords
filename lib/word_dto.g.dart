@@ -14,7 +14,6 @@ WordDTO _$WordDTOFromJson(Map<String, dynamic> json) {
       json['content'] as String?,
       (json['latitude'] as num?)?.toDouble(),
       (json['longitude'] as num?)?.toDouble(),
-      json['wordsId'] as int?,
     );
 }
 
@@ -24,5 +23,4 @@ Map<String, dynamic> _$WordDTOToJson(WordDTO instance) => <String, dynamic>{
       'content': instance.content,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'wordsId': instance.wordsId,
     };

@@ -67,6 +67,7 @@ class DbHelper{
     return execute;
   }
 
+
   // Permet de récupérer le nombre de mots dans la base de donnée
   Future<int> countWords() async {
     //Récupération de l'instance de la db
@@ -100,7 +101,7 @@ class DbHelper{
 
   }
 
-  //Permet d'insert dans une base de donnée
+  //Permet de supprimer un mot de la bdd local
   Future<void> delete(int uid) async{
     //Récupération de l'instance de la db
     Database db = await instance.database;

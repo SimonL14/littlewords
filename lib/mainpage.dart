@@ -62,7 +62,7 @@ class _MyDashboardState extends State<MyDashboard> {
               Navigator.pushReplacement(context,
                   new MaterialPageRoute(builder: (context) => MyLoginPage()));
             },
-            child: Text('Deconnection'),
+            child: Text('Deconnexion'),
           )
         ],
       ),
@@ -98,8 +98,9 @@ class _MyDashboardState extends State<MyDashboard> {
               builder: (context, ref, child) {
                 return FloatingActionButton(
                   onPressed: () => _openListWord(context),
-                  tooltip: 'AddWord',
-                  child: const Icon(Icons.arrow_upward),
+                  tooltip: 'ListWord',
+                  backgroundColor: Color(0xffFFFFFF),
+                  child: Image.asset('Assets/backpack.png',width: 45,height: 45,),
                 );
               },
             ),

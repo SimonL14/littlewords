@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:littlewords/my_words.provider.dart';
 import 'package:littlewords/word_dto.dart';
 
+import 'myword.dart';
+
 class ListWord extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,12 +70,24 @@ class Word extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      color: Colors.amber[100],
-      child: Center(child: Text('Entry ${word.content}')),
+    return InkWell(
+      onTap: () {
+        // Show new showModalBottomSheet here
+        showModalBottomSheet(
+          context: context,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+            ),
+            backgroundColor: Color(0xffCEDAE4),
+            builder: (context) {
+              return MyWord(word: word);
+            });
+      },
+      child: Container(
+        height: 50,
+        color: Color(0xFF7DC1ED),
+        child: Center(child: Text('Mot : ${word.content}, De : ${word.author}')),
+      ),
     );
-
-
   }
 }

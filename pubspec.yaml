@@ -80,6 +80,10 @@ flutter:
     - Assets/jouer.png
     - Assets/Logo.png
     - Assets/bonhomme.png
+    - Assets/import.png
+    - Assets/export.png
+    - Assets/backpack.png
+    - Assets/delete.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

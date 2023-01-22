@@ -10,39 +10,32 @@ import 'package:littlewords/word_dto.dart';
 import 'package:littlewords/words_dto.dart';
 
 final wordsAroundProvider = FutureProvider<List<WordDTO>>((ref) async {
-  return ref
-      .watch(deviceLocationProvider)
-      .when(data: (data) => _onData(data, ref), error: _onError, loading: _onLoading);
-});
+  AsyncValue<LatLng?> location = ref.watch(deviceLocationProvider);
 
-FutureOr<List<WordDTO>> _onData(LatLng? data, ref) async {
+  return location.map(data: (data) async {
+    print('try to get words around ${data.value!.latitude} ${data.value!
+        .longitude}');
 
-  if(null == data) return [];
+    final Dio dio = ref.read(dioProvider);
+    Response response = await dio.get(
+        '/word/around?latitude=${data.value!.latitude}&longitude=${data.value!
+            .longitude}');
+    print(response.toString());
+    var jsonAsString = response.toString();
+    var json = jsonDecode(jsonAsString);
 
-  print(
-      'try to get words around ${data.latitude} ${data.longitude}');
+    final WordsDTO wordsDTO = WordsDTO.fromJson(json);
+    if (wordsDTO.data == null) {
+      return Future.value([]);
+    }
 
-  final Dio dio = ref.read(dioProvider);
-
-  Response response = await dio.get(
-      '/word/around?latitude=${data.latitude}&longitude=${data.longitude}');
-
-  var jsonAsString = response.toString();
-  var json = jsonDecode(jsonAsString);
-
-  final WordsDTO wordsDTO = WordsDTO.fromJson(json);
-  if (wordsDTO.data == null) {
+    print(wordsDTO.data!.length.toString());
+    return Future.value(wordsDTO.data!);
+  }, error: (error) {
+    print(error);
     return Future.value([]);
-  }
-
-  print('test $wordsDTO');
-  return Future.value(wordsDTO.data!);
-}
-
-FutureOr<List<WordDTO>> _onError(Object error, StackTrace stackTrace) {
-  return [];
-}
-
-FutureOr<List<WordDTO>> _onLoading() {
-  return [];
-}
+  },loading: (loading) {
+    print('loading');
+    return Future.value([]);
+  });
+});

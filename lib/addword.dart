@@ -7,8 +7,6 @@ import 'package:littlewords/device_location.provider.dart';
 import 'package:littlewords/my_words.provider.dart';
 import 'package:littlewords/word_dto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'dbhelpercours.dart';
 import 'dio.provider.dart';
 
 class AddWord extends ConsumerWidget {
@@ -78,10 +76,10 @@ class _ValidCreateWordButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref
         .watch(deviceLocationProvider)
-        .when(data: (data) => _data(data, ref, ctrl), error: _error, loading: _loading);
+        .when(data: (data) => _data(data, ref, ctrl,context), error: _error, loading: _loading);
   }
 
-  _data(LatLng? data, WidgetRef ref, TextEditingController ctrl) {
+  _data(LatLng? data, WidgetRef ref, TextEditingController ctrl, context) {
     return ElevatedButton(
       onPressed: () async {
         var prefs = await SharedPreferences.getInstance();
@@ -91,7 +89,8 @@ class _ValidCreateWordButton extends ConsumerWidget {
         WordDTO w = WordDTO(null, username, ctrl.text, data!.latitude, data!.longitude);
          var res = await dio.post('/word', data: w);
         print(res.toString());
-        // ref.refresh(myWordsProvider);
+        ref.refresh(myWordsProvider);
+        Navigator.pop(context);
 
       },
       child: Text('Envoyer'),

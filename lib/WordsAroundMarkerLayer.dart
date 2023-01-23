@@ -22,30 +22,33 @@ class WordsAroundMarkerLayer extends ConsumerWidget {
         var wordPosition = LatLng(w.latitude!, w.longitude!);
         markers.add(Marker(
             point: wordPosition,
+            width: 100,
+            height: 100,
             builder: (context){
+              return GestureDetector(
+                child: Icon(Icons.message, size: 32,),
+                onTap:(){
+                  var uid = w.uid.toString();
+                  var longitude = w.longitude.toString();
+                  var latitude = w.latitude.toString();
 
-              //Simon, votre mission est de modifier ou d'adapter le code pour que ça marche ! Normalement le code est ok mais vous devez vérifier si c'est ok!
-              onTap:(){
-                var uid = w.uid.toString();
-                var longitude = w.longitude.toString();
-                var latitude = w.latitude.toString();
-                
-                Dio dio = ref.read(dioProvider);
-                dio.get("/word?uid=" + uid + "&longitude=" + longitude + "&latitude=" + latitude)
-                  .then((value) {
+                  Dio dio = ref.read(dioProvider);
+                  dio.get("/word?uid=" + uid + "&longitude=" + longitude + "&latitude=" + latitude)
+                      .then((value) {
                     var valueStr = value.toString();
                     var json = jsonDecode(valueStr);
                     final WordDTO wordDTO = WordDTO.fromJson(json);
-                    ref.refresh(wordsAroundProvider);
-                });
-              };
-
-
-
-
-
-          return const Icon(Icons.message, size: 32,);
-          }));
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ViewMessage(
+                            word: wordDTO,
+                          );
+                        });
+                  });
+                },
+              );
+            }));
       }
 
       return MarkerLayer(markers: markers);

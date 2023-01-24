@@ -84,9 +84,6 @@ flutter:
     - Assets/export.png
     - Assets/backpack.png
     - Assets/delete.png
-    - Assets/diskette.png
-    - Assets/hand.png
-    - Assets/lettre.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

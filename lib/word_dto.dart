@@ -14,10 +14,6 @@ class WordDTO{
   final double? latitude;
   final double? longitude;
 
-  get message => null;
-
-  get word => null;
-
   Map<String, dynamic> toJson() => _$WordDTOToJson(this);
 
   factory WordDTO.fromJson(Map<String, dynamic> json) => _$WordDTOFromJson(json);
